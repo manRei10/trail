@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trail — macOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Hiragino Sans", sans-serif;
+      background-color: #09090B;
+      color: #ECECEC;
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+    }
+    .mono { font-family: "SF Mono", Menlo, monospace; }
+  </style>
+</head>
+<body class="selection:bg-white selection:text-black">
+
+  <header class="max-w-3xl mx-auto px-6 py-7 flex items-center justify-between text-xs border-b border-white/[0.08]">
+    <div class="flex items-center gap-2.5">
+      <span class="font-semibold text-sm text-[#ECECEC]">Trail</span>
+      <span class="text-[#86868B] mono">macOS</span>
+    </div>
+    <div class="flex items-center gap-5">
+      <a href="https://github.com/manRei10/trail/releases/download/v1.0.0/Trail-1.0.0.dmg" class="text-[#86868B] hover:text-[#ECECEC] transition-colors">Download .dmg</a>
+      <a href="https://buy.polar.sh/polar_cl_wGiQbLdyyUzo14ptF9QhiNHqIElQTLgfAdb7g1uBNR6" target="_blank" rel="noopener noreferrer" class="text-[#ECECEC] hover:underline font-medium mono">Buy $9</a>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-6 pt-14 pb-24">
+
+    <section class="mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+      <div>
+        <h1 class="text-lg sm:text-xl font-semibold tracking-tight text-[#ECECEC] mb-1.5">
+          マウスの移動距離を、走行距離として記録する。
+        </h1>
+        <p class="text-xs text-[#86868B]">メニューバーに今日の距離を表示。</p>
+      </div>
+      <div class="flex items-center gap-2.5 text-xs shrink-0">
+        <a href="https://github.com/manRei10/trail/releases/download/v1.0.0/Trail-1.0.0.dmg" class="px-4 py-2 rounded-lg bg-[#ECECEC] text-[#141416] font-medium hover:bg-white transition-colors">Download .dmg</a>
+        <a href="https://buy.polar.sh/polar_cl_wGiQbLdyyUzo14ptF9QhiNHqIElQTLgfAdb7g1uBNR6" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg border border-white/[0.14] text-[#ECECEC] hover:bg-white/[0.06] transition-colors mono">Pro $9</a>
+      </div>
+    </section>
+
+    <!-- Menu bar + popover specimen -->
+    <section class="flex flex-col items-center sm:items-end gap-3">
+      <div class="w-full rounded-lg bg-[#141416] border border-white/[0.10] h-7 px-4 flex items-center justify-end gap-5 text-[11px] mono text-[#86868B]">
+        <span class="text-[#ECECEC]">1.84 km</span>
+        <span>14:36</span>
+      </div>
+
+      <div class="w-[320px] bg-[#141416] border border-white/[0.10] rounded-xl shadow-2xl p-5 flex flex-col" style="height:336px">
+        <div class="flex items-baseline gap-1.5">
+          <span class="text-[56px] font-semibold tracking-tight leading-none">1.84</span>
+          <span class="text-lg text-[#86868B]">km</span>
+        </div>
+
+        <div class="mt-5">
+          <div class="h-1 rounded-full bg-white/[0.08] overflow-hidden"><div class="h-full rounded-full bg-[#ECECEC]" style="width:92%"></div></div>
+          <div class="mt-2 flex justify-between text-[11px] mono text-[#86868B]"><span>92%</span><span>2 km</span></div>
+        </div>
+
+        <div class="mt-auto relative" style="height:102px">
+          <div class="absolute left-0 right-0 border-t border-dashed border-white/[0.18]" style="bottom:' + 22 + 'px"></div>
+          <div id="bars" class="absolute inset-0 flex items-end gap-2"></div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-white/[0.08] flex justify-between text-[11px] mono text-[#86868B]">
+          <span>3h 12m</span><span>11.36 km</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="max-w-3xl mx-auto px-6 py-8 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-[#86868B]">
+    <span>manRei Lab</span>
+    <a href="mailto:manreilab@proton.me" class="hover:text-[#ECECEC] mono">manreilab@proton.me</a>
+  </footer>
+
+  <script>
+    const data = [['W',1620],['T',2310],['F',980],['S',1460],['S',2740],['M',410],['T',1840]];
+    const scale = 2740, area = 80, goal = 2000;
+    const bars = document.getElementById('bars');
+    data.forEach(([label, m], i) => {
+      const today = i === data.length - 1;
+      const h = Math.max(2, m / scale * area);
+      bars.insertAdjacentHTML('beforeend',
+        `<div class="flex-1 flex flex-col items-center justify-end">
+           <div class="w-full rounded-[3px]" style="height:${h}px;background:${today ? '#ECECEC' : 'rgba(236,236,236,0.22)'}"></div>
+           <span class="mt-2 text-[10px] mono leading-none ${today ? 'text-[#ECECEC]' : 'text-[#86868B]'}">${label}</span>
+         </div>`);
+    });
+    document.querySelector('.border-dashed').style.bottom = (22 + goal / scale * area) + 'px';
+  </script>
+</body>
+</html>
